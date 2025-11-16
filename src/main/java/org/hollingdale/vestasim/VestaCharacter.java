@@ -106,11 +106,4 @@ public enum VestaCharacter {
             .filter(c -> code==c.code)
             .findFirst();
     }
-
-    // For testing only
-    public static Optional<VestaCharacter> fromCharacter(char ch) {
-        return Arrays.stream(values())
-            .filter(c -> ch==c.character)
-            .findFirst();
-    }
 }

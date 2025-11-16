@@ -3,56 +3,69 @@ package org.hollingdale.vestasim.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JComponent;
 
 import org.hollingdale.vestasim.VestaCharacter;
+import org.hollingdale.vestasim.VestasimConfiguration;
 
-public class VestaBit extends JComponent {
-
-    private static final long DELAY_MS = 100;
-
+public class VestaBit extends JComponent
+{
     private VestaCharacter target = VestaCharacter.BLANK;
     private VestaCharacter current = VestaCharacter.BLANK;
 
-    public VestaBit() {
-        setPreferredSize(new Dimension(20, 40));
+    public VestaBit()
+    {
+        setPreferredSize( new Dimension( 20, 40 ) );
     }
 
-    public VestaBit setTarget(VestaCharacter target) {
+    public VestaBit setTarget( VestaCharacter target )
+    {
         this.target = target;
         return this;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent( Graphics g )
+    {
+        super.paintComponent( g );
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor( Color.BLACK );
+        g.fillRect( 0, 0, getWidth(), getHeight() );
 
-        g.setColor(current.getColor());
+        g.setColor( current.getColor() );
 
         var character = current.getCharacter();
-        if (character==(char)0) {
+        if ( character == ( char ) 0 )
+        {
             // Draw block
-        } else {
+        }
+        else
+        {
             // Draw character
-            g.drawString(String.valueOf(character), 5, 20);
+            g.drawString( String.valueOf( character ), 5, 20 );
         }
     }
 
-    public void transition() {
+    public void transition()
+    {
         new Thread( () -> {
-            while (current != target) {
+            while ( current != target )
+            {
                 current = current.next();
                 repaint();
-                try {
-                    Thread.sleep(DELAY_MS);
-                } catch (InterruptedException ix) {
+                try
+                {
+                    Thread.sleep( VestasimConfiguration.FLIP_DELAY_MS );
+                }
+                catch ( InterruptedException ix )
+                {
                     break;
                 }
             }
-        }).start();
+        } ).start();
     }
 }
