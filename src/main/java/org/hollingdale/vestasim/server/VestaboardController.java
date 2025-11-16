@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class VestaboardController {
 
-    @Autowired private Vestaboard board;
+    @Autowired
+    private Vestaboard board;
 
     @PostMapping("/local-api/message")
     public ResponseEntity<Void> setMessage(
-        @RequestHeader(value = "X-Vestaboard-Local-Api-Key", required = false) String key,
-        @RequestBody List<List<Integer>> payload ) {
+            @RequestHeader(value = "X-Vestaboard-Local-Api-Key", required = false) String key,
+            @RequestBody List<List<Integer>> payload) {
 
         if (key == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -33,9 +34,8 @@ public class VestaboardController {
     }
 
     private static boolean isValid(List<List<Integer>> payload) {
-        return 
-            payload != null &&
-            payload.size() == VestasimConfiguration.BOARD_ROWS &&
-            payload.stream().allMatch(line -> line.size() == VestasimConfiguration.BOARD_COLUMNS);
+        return payload != null &&
+                payload.size() == VestasimConfiguration.BOARD_ROWS &&
+                payload.stream().allMatch(line -> line.size() == VestasimConfiguration.BOARD_COLUMNS);
     }
 }

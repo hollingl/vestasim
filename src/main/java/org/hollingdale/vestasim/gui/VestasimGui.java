@@ -1,6 +1,7 @@
 package org.hollingdale.vestasim.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -17,9 +18,9 @@ public class VestasimGui extends JFrame {
         setTitle("Vestasim");
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 480));
         pack();
         setLocationRelativeTo(null);
-        setVisible(true);    
+        setVisible(true);
     }
 }

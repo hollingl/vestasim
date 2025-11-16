@@ -10,8 +10,8 @@ public class VestasimApplication {
 
     public static void main(String[] args) throws IOException {
         new SpringApplicationBuilder(VestasimApplication.class)
-            .headless(false)
-            .build()
-            .run(args);
+                .headless(false)
+                .build()
+                .run(args);
     }
 }
