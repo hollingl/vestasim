@@ -13,7 +13,7 @@
 
     <groupId>org.hollingdale</groupId>
     <artifactId>vistasim</artifactId>
-    <version>0</version>
+    <version>1</version>
     <packaging>jar</packaging>
 
     <properties>
