@@ -42,6 +42,15 @@ no way validated. Omitting it will result in a `401 Unauthorized` response code.
 
 If the payload is not of the correct format you will get a `400 Bad Request` response code.
 
+An example `curl` request is shown below:
+
+```
+curl --location --request POST 'localhost:7000/local-api/message' \
+--header 'X-Vestaboard-Local-Api-Key: dummy' \
+--header 'Content-Type: application/json' \
+--data-raw '[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,8,5,12,12,15,0,23,15,18,12,4,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]'
+```
+
 # Version History
 
 * 1 - 19 November 2025 - Initial version
