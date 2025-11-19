@@ -3,6 +3,7 @@ package org.hollingdale.vestasim;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -82,13 +83,13 @@ public enum VestaCharacter {
 
     public Color getColor() {
         return switch (this) {
-            case CRED -> Color.RED;
-            case CORANGE -> Color.ORANGE;
-            case CYELLOW -> Color.YELLOW;
-            case CGREEN -> Color.GREEN;
-            case CBLUE -> Color.BLUE;
-            case CVIOLET -> new Color(127, 0, 255);
-            case CBLACK -> Color.BLACK;
+            case CRED -> new Color(218, 41, 28);
+            case CORANGE -> new Color(255, 117, 0);
+            case CYELLOW -> new Color(255, 184, 28);
+            case CGREEN -> new Color(0, 154, 68);
+            case CBLUE -> new Color(0, 132, 213);
+            case CVIOLET -> new Color(112, 47, 138);
+            case CBLACK -> new Color(37, 40, 42);
             default -> Color.WHITE;
         };
     }
@@ -105,5 +106,9 @@ public enum VestaCharacter {
         return Arrays.stream(values())
                 .filter(c -> code == c.code)
                 .findFirst();
+    }
+
+    public static VestaCharacter random() {
+        return values()[new Random().nextInt(values().length)];
     }
 }

@@ -1,11 +1,12 @@
 package org.hollingdale.vestasim.gui;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -20,15 +21,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class Vestaboard extends JPanel {
 
-    private static final double MARGIN_FACTOR = 0.03;
-    private static final double PADDING_FACTOR = 0.05;
-    private static final double FRAME_FACTOR = 0.01;
-
     private List<List<VestaBit>> board;
 
     public Vestaboard() {
+        // Do our own layout management
         setLayout(null);
 
+        // Add Bits to the board
         board = new ArrayList<>();
         for (var y = 0; y < VestasimConfiguration.BOARD_ROWS; y++) {
             List<VestaBit> line = new ArrayList<>();
@@ -41,6 +40,7 @@ public class Vestaboard extends JPanel {
             }
         }
 
+        // Resize and position Bits upon component resize
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -54,7 +54,7 @@ public class Vestaboard extends JPanel {
         var topLeft = bounds.get(0);
         var bottomRight = bounds.get(1);
 
-        var padding = (bottomRight.x - topLeft.x) * PADDING_FACTOR;
+        var padding = (bottomRight.x - topLeft.x) * VestasimConfiguration.BOARD_PADDING_FACTOR;
         var dx = (bottomRight.x - topLeft.x - (2 * padding)) / VestasimConfiguration.BOARD_COLUMNS;
         var dy = 1.02 * (bottomRight.y - topLeft.y - (2 * padding)) / VestasimConfiguration.BOARD_ROWS;
 
@@ -76,27 +76,41 @@ public class Vestaboard extends JPanel {
         super.paintComponent(g);
         var g2d = (Graphics2D) g;
 
+        var bounds = getRenderedRectangle();
+
+        // Background
+        var gradient = new LinearGradientPaint(
+                new Point(bounds.x, bounds.y),
+                new Point(bounds.x + bounds.width, bounds.y + bounds.height),
+                new float[] { 0f, 0.5f, 1f },
+                VestasimConfiguration.BOARD_GRADIENT);
+
+        g2d.setPaint(gradient);
+        g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        // Frame
+        var frameWidth = Math.max(getWidth(), getHeight()) * VestasimConfiguration.BOARD_FRAME_FACTOR;
+        g2d.setColor(VestasimConfiguration.BOARD_BORDER_COLOR);
+        g2d.setStroke(new BasicStroke((float) frameWidth));
+        g2d.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        // Branding
+        g2d.setFont(new Font(VestasimConfiguration.BRANDING_FONT, Font.BOLD,
+                (int) (getWidth() * VestasimConfiguration.BRANDING_FONT_FACTOR)));
+        Utils.drawStringC(g2d, "V E S T A B O A R D", bounds.x + bounds.width / 2,
+                (int) (bounds.y + bounds.height * VestasimConfiguration.BRANDING_Y_FACTOR));
+    }
+
+    private Rectangle getRenderedRectangle() {
         var bounds = getRenderedBounds();
         var topLeft = bounds.get(0);
         var bottomRight = bounds.get(1);
 
-        // Background
-        var gradient = new LinearGradientPaint(topLeft, bottomRight,
-                new float[] { 0f, 0.5f, 1f },
-                new Color[] { Color.DARK_GRAY, Color.BLACK, Color.DARK_GRAY });
-
-        g2d.setPaint(gradient);
-        g2d.fillRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
-
-        // Frame
-        var frame = Math.max(getWidth(), getHeight()) * FRAME_FACTOR;
-        g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke((float) frame));
-        g2d.drawRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+        return new Rectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
     }
 
     private List<Point> getRenderedBounds() {
-        var margin = (int) (Math.max(getWidth(), getHeight()) * MARGIN_FACTOR);
+        var margin = (int) (Math.max(getWidth(), getHeight()) * VestasimConfiguration.BOARD_MARGIN_FACTOR);
         var width = getWidth() - (2 * margin);
         var height = getHeight() - (2 * margin);
         var aspectRatio = width / height;
