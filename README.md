@@ -1,5 +1,7 @@
 # Vestasim
 
+![Vestasim GUI window](vestasim.png)
+
 ## What is Vestsim?
 
 Vestasim is a Java application that simulates a Flagship black Vestaboard. It has two components:
