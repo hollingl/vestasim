@@ -2,6 +2,8 @@ package org.hollingdale.vestasim.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ public class VestasimGui extends JFrame {
         setLayout(new BorderLayout());
         add(board, BorderLayout.CENTER);
 
-        setTitle("Vestasim");
+        setTitle("Vestasim v" + getVersion());
         setIconImage(new ImageIcon(this.getClass().getResource("/favicon.ico")).getImage());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -24,5 +26,16 @@ public class VestasimGui extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private static String getVersion() {
+        try {
+            var properties = new Properties();
+            properties.load(
+                    VestasimGui.class.getResourceAsStream("/META-INF/maven/org.hollingdale/vistasim/pom.properties"));
+            return properties.getProperty("version");
+        } catch (IOException iox) {
+            return "<unknown>";
+        }
     }
 }
