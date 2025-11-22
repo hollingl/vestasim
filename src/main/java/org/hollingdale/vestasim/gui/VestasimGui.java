@@ -3,6 +3,7 @@ package org.hollingdale.vestasim.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -16,6 +17,7 @@ public class VestasimGui extends JFrame {
         add(board, BorderLayout.CENTER);
 
         setTitle("Vestasim");
+        setIconImage(new ImageIcon(this.getClass().getResource("/favicon.ico")).getImage());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(800, 480));
